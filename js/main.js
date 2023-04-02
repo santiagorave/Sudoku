@@ -23,7 +23,7 @@ const sudokuObject = function (difficulty) {
         for( let aside of board.children ) {
             for(let j=0;j<9;j++) {
                 let input = document.createElement("input");
-                input.value=++counter;
+                input.id=++counter;
                 aside.append(input);
 
             }  
