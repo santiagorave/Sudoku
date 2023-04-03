@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+  margin:0;
+  padding:0;
+  font-family: 'Montserrat', sans-serif;
+}
+
 section {
   display: flex;
   flex-direction: column;
@@ -7,28 +14,44 @@ section {
   align-items: center;
 
 }
+nav{
+  display: flex;
+  align-items: center;
+  padding-left: 3vh;  
+  height: 8vh;
+  width: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+h1 {
+  color: #1D7874;
+}
 button {
   width: 40%;
-  height: 40px;
+  height: 70px;
   text-align: center;
-  border-radius: 5%;
+  border-radius: 1vh;
   border: 1px solid transparent;
+  font-size: 28px;
+  transition: .1s;
 }
 button:hover {
-  background-color: dimgray;
-  color: red;
+  background-color: #1D7874;
+  color: white;
+  cursor: pointer;
 }
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
 }
 
 main {
     display: flex;
     column-gap: 4vh;
     width: 100%;
+    padding: 8vh;
 }
 #sudoku {
   display: flex;
@@ -44,6 +67,7 @@ aside > input {
   width: 7vh;
   height: 7vh;
   text-align: center;
+  font-size: 35px;
 
 }
 .horizon-line {
