@@ -52,13 +52,13 @@ let board = document.getElementById("sudoku");
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
         let button = document.createElement("button");
-        button.id = i;
+        button.id = `button-${i}`;
         button.classList.add("hover");
         levelButtons.append(button);
     }
-    document.getElementById('0').innerText = 'Easy';
-    document.getElementById('1').innerText = 'Medium';
-    document.getElementById('2').innerText = 'Hard';
+    document.getElementById('button-0').innerText = 'Easy';
+    document.getElementById('button-1').innerText = 'Medium';
+    document.getElementById('button-2').innerText = 'Hard';
 
 };
 generateButtons();
