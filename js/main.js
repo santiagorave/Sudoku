@@ -1,10 +1,8 @@
 const sudokuObject = function (difficulty) {
     this.difficulty = difficulty;
-    this.populateNumbers = function (difficulty = "easy") {
-        // console.log(difficulty)
+    this.generateSolution = function (difficulty = "easy") {
         switch (difficulty) {
             case "easy":
-
                 break;
             case "medium":
                 break;
@@ -28,13 +26,6 @@ const sudokuObject = function (difficulty) {
 
             }  
         }
-            // debugger;
-            // for(let j=0;j<9;j++) {
-            // let box = document.createElement("input");
-            // box.value=j;
-            // rows.append(box);
-
-            // }
 
         
 
