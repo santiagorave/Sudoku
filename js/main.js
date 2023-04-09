@@ -163,7 +163,7 @@
 // }
 // console.log(arrayTest);
 // console.log(counter);
-let loadJson()=>{
+let loadJson=()=>{
     const xhttp = XMLHttpRequest();
     xhttp.onreadystatechange = ()=>{
         if(xhttp.readyState==4 && xhttp.status==200){
