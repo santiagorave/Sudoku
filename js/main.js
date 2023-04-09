@@ -168,4 +168,13 @@ getJSON();
 // }
 // console.log(arrayTest);
 // console.log(counter);
-
+let loadJson=()=>{
+    const xhttp = XMLHttpRequest();
+    xhttp.onreadystatechange = ()=>{
+        if(xhttp.readyState==4 && xhttp.status==200){
+            console.log(JSON.parse(xhttp.responseText));
+        }
+    }
+    xhttp.open("GET","http://127.0.0.1:5501/source.json");
+    xhttp.send();
+}
