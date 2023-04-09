@@ -1,46 +1,33 @@
 const sudokuObject = function (difficulty) {
     this.difficulty = difficulty;
-    this.generateSolution = function (difficulty = "easy") {
+    this.generateSolution = function (values) {
         let array2d=[];
         let inputs = document.getElementsByTagName("input");
-        // console.log(inputs[0].value);
         for(let k=0;k<9;k++){
-        array2d.push(this.randomValues());
+        array2d.push(values[k]);
         }
-        console.log(array2d);
         let counter=0;
-        let arrray= [];
+        let positions =this.randomValues();
 
-        for(let l=0;l<9;l++){
-        //     console.log(array2d[l][1]);
-        // arrray.push(array2d[l][0]);
-        for(let m=0;m<9;m++){
-        inputs[counter++].value=array2d[l][m]; //Pushing to html
-        console.log(array2d[l][m]);
-            // console.log(`L: ${l}    M: ${m}      counter:${counter}  input:${inputs[counter].value}`)
+        //Population
+        for(let row=0;row<9;row++){
+        for(let column=0;column<9;column++){
+            if(positions.includes(counter)) {
+            inputs[counter].value=array2d[row][column]; //Pushing to html 
+            $(inputs[counter]).prop("disabled",true);
+            }
+            counter++
+
+            
+        }
         }
 
-        }
-        console.log(arrray);
-
-
-
-
-        // switch (difficulty) {
-        //     case "easy":
-        //         break;
-        //     case "medium":
-        //         break;
-        //     case "hard":
-        //         break;
-
-        // }
     };
     this.randomValues = function() {
             let arr = [];
             let idx = 0;
-            while (idx < 9) {
-            let num = Math.floor(Math.random() * 9) + 1;
+            while (idx < 36) {
+            let num = Math.floor(Math.random() * 81) + 1;
             if (!checkNum(num)) {
             arr.push(num);
             idx++;
@@ -85,6 +72,8 @@ const sudokuObject = function (difficulty) {
 // //DECLARATIONS
 let levelButtons = document.getElementsByClassName("buttons")[0];
 let board = document.getElementById("sudoku");
+let sudokuArray;
+
 
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
@@ -99,17 +88,26 @@ const generateButtons = function () {
 
 };
 generateButtons();
-
+let getJSON=()=>{
+    // debugger;
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = ()=>{
+        if(request.readyState==4 && request.status==200){
+            // console.log(JSON.parse(request.responseText)[0].values);
+            sudoku.generateSolution(JSON.parse(request.responseText)[0].values);
+        }
+    }
+    request.open("GET","http://127.0.0.1:5501/source.json");
+    request.send();
+}
+getJSON();
 let sudoku = new sudokuObject();
 sudoku.generateBoard();
-sudoku.generateSolution();
+// console.log(sudoku.randomValues());
 let arrayTest = [[], [], [], [], [], [], [], [], []];
 let counter = 0;
 
-const getJSON = () => {
-    const request = new XMLHttpRequest();
-}
-getJSON();
+
 
 // for (let row = 0; row < 9; row++) {
 //     for (let column = 0; column < 9; column++) {
@@ -135,25 +133,41 @@ getJSON();
 //                 //             console.log(`Después: ${arrayTest[row][n]}`);
 //                 //             }
 //                 //     }
-//                 const checkRows = function () {
-//                     for (let m = 0; m < 9; m++) {
-//                         let compare = arrayTest[row][m];
-//                         // debugger;
-//                         for (let n = 0; n < 9; n++) {
-//                             if (m != n) {
-//                                 if (compare == arrayTest[row][n]) {
-//                                     console.log(`Este número:${compare} es igual a ${arrayTest[row][n]}`)
-//                                     // console.log(`Antes: ${arrayTest[row][n]}`);
-//                                     arrayTest[row][n] = Math.floor(Math.random() * 9) + 1;
-//                                     checkRows();
-//                                     // console.log(`Después: ${arrayTest[row][n]}`);
-//                                 }
-//                             }
+                // const checkRows = function () {
+                //     let arrayDuplicates=[];
+                //         for(let a=0;a<36;a++) {
+                //             let number = Math.floor(Math.random() * 81) + 1;
+                //             if(a==0) {
+                //                 arrayDuplicates.push(number);
+                //             }else {
+                //                 for(let k=0;k<arrayDuplicates.length;k++) {
+                //                     let compare = arrayDuplicates[k];
+                //                     // while(){
 
-//                         }
-//                     }
-//                 }
-//                 checkRows();
+                //                     // }
+                //                 }
+                //             }
+
+                //         }
+                //         // let compare = arrayTest[row][m];
+                //         // // debugger;
+                //         // for (let n = 0; n < 9; n++) {
+                //         //     if (m != n) {
+                //         //         if (compare == arrayTest[row][n]) {
+                //         //             // console.log(`Antes: ${arrayTest[row][n]}`);
+                //         //             arrayTest[row][n] = Math.floor(Math.random() * 9) + 1;
+                //         //             checkRows();
+                //         //             // console.log(`Después: ${arrayTest[row][n]}`);
+                //         //         }
+                //         //     }
+
+                //         // }
+                // // console.log(arrayDuplicates);
+
+                //     }
+
+                
+                // checkRows();
 //                 // } 
 //                 // }
 
@@ -168,13 +182,5 @@ getJSON();
 // }
 // console.log(arrayTest);
 // console.log(counter);
-let loadJson=()=>{
-    const xhttp = XMLHttpRequest();
-    xhttp.onreadystatechange = ()=>{
-        if(xhttp.readyState==4 && xhttp.status==200){
-            console.log(JSON.parse(xhttp.responseText));
-        }
-    }
-    xhttp.open("GET","http://127.0.0.1:5501/source.json");
-    xhttp.send();
-}
+
+
