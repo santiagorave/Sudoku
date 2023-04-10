@@ -1,14 +1,11 @@
-const sudokuObject = function (difficulty) {
-    this.difficulty = difficulty;
-    this.generateSolution = function (values) {
-        let array2d=[];
+const sudokuObject = function () {
+    this.generateSudoku = function (values,difficulty) {
         let inputs = document.getElementsByTagName("input");
         for(let k=0;k<9;k++){
         array2d.push(values[k]);
         }
         let counter=0;
-        let positions =this.randomValues();
-
+        let positions =this.randomPositions(difficulty);
         //Population
         for(let row=0;row<9;row++){
         for(let column=0;column<9;column++){
@@ -23,10 +20,31 @@ const sudokuObject = function (difficulty) {
         }
 
     };
-    this.randomValues = function() {
+
+    this.reset= function() {
+     $("input").val("");
+     $("input").prop("disabled",false);
+    }
+    this.randomPositions = function(difficulty) {
+        let numberDifficulty;
+            switch(difficulty){
+                default:
+                case "easy":
+                numberDifficulty=40;
+                break;
+                case "medium":
+
+                numberDifficulty=32;
+                break;
+                case "hard":
+                    
+                    numberDifficulty=22;
+                break;
+
+            }
             let arr = [];
             let idx = 0;
-            while (idx < 36) {
+            while (idx < numberDifficulty) {
             let num = Math.floor(Math.random() * 81) + 1;
             if (!checkNum(num)) {
             arr.push(num);
@@ -66,13 +84,14 @@ const sudokuObject = function (difficulty) {
 
 }
 
-// //easy 36   
+// //easy 40 
 // //medium 31
 // //hard 25
 // //DECLARATIONS
 let levelButtons = document.getElementsByClassName("buttons")[0];
 let board = document.getElementById("sudoku");
-let sudokuArray;
+let array2d=[];
+
 
 
 const generateButtons = function () {
@@ -89,26 +108,50 @@ const generateButtons = function () {
 };
 generateButtons();
 let getJSON=()=>{
-    // debugger;
     const request = new XMLHttpRequest();
     request.onreadystatechange = ()=>{
         if(request.readyState==4 && request.status==200){
-            // console.log(JSON.parse(request.responseText)[0].values);
-            sudoku.generateSolution(JSON.parse(request.responseText)[0].values);
+        sudoku.generateSudoku(JSON.parse(request.responseText)[0].values);
         }
     }
     request.open("GET","http://127.0.0.1:5501/source.json");
     request.send();
 }
 getJSON();
+$(".buttons").children().eq(0).addClass("active");
 let sudoku = new sudokuObject();
 sudoku.generateBoard();
-// console.log(sudoku.randomValues());
-let arrayTest = [[], [], [], [], [], [], [], [], []];
-let counter = 0;
+let rows = $("aside");
+$(rows).eq(2).css("border-bottom","5px solid #1D7874");
+$(rows).eq(5).css("border-bottom","5px solid #1D7874");
 
+for(let k=0;k<9;k++){
+    $(rows[k]).children().eq(2).css("border-right","5px solid #1D7874");
+    $(rows[k]).children().eq(5).css("border-right","5px solid #1D7874");
+}
 
+$(".buttons").children().eq(0).click(()=>{
+    $(".buttons").children().removeClass("active");
+    $(".buttons").children().eq(0).addClass("active");
+    sudoku.reset();
+    sudoku.generateSudoku(array2d,"easy");
+    
+})
 
+$(".buttons").children().eq(1).click(()=>{
+    $(".buttons").children().removeClass("active");
+    $(".buttons").children().eq(1).addClass("active");
+    sudoku.reset();
+    sudoku.generateSudoku(array2d,"medium");
+    
+})
+$(".buttons").children().eq(2).click(()=>{
+    $(".buttons").children().removeClass("active");
+    $(".buttons").children().eq(2).addClass("active");
+    sudoku.reset();
+    sudoku.generateSudoku(array2d,"hard");
+    
+})
 // for (let row = 0; row < 9; row++) {
 //     for (let column = 0; column < 9; column++) {
 //         let number = Math.floor(Math.random() * 9) + 1;

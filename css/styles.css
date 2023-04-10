@@ -35,11 +35,13 @@ button {
   font-size: 28px;
   transition: .1s;
 }
-button:hover {
+button:hover,.active {
   background-color: #1D7874;
   color: white;
   cursor: pointer;
 }
+
+
 
 body {
     display: flex;
@@ -61,7 +63,7 @@ main {
 }
 #sudoku > aside {
   display: flex;
-  width: 90%;
+  width: fit-content;
 }
 aside > input {
   display: flex;
@@ -69,6 +71,7 @@ aside > input {
   height: 7vh;
   text-align: center;
   font-size: 35px;
+  border: 1px solid transparent;
 
 }
 .horizon-line {
