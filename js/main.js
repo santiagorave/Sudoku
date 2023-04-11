@@ -93,7 +93,19 @@ let board = document.getElementById("sudoku");
 let array2d=[];
 
 
+const validateRows = function(target,siblings) {
+    target.css("color","black");
+    for(let rowValue of siblings) {
+        if(target[0].value==rowValue.value) {
+            target.css("color","red");
+            break;
+        }else {
+            target.css("color","green");
+            
+        }
+    }
 
+}
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
         let button = document.createElement("button");
@@ -159,6 +171,9 @@ inputs.on("keyup",(e)=> {
     if(e.target.value>9 || e.target.value==0 || e.target.value.match(letters) ){
         e.target.value="";
         console.log("prevent")
+    }else {
+        validateRows($(e.target),$(e.target).siblings());
+        
     }
 })
 // for (let row = 0; row < 9; row++) {
