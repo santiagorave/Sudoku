@@ -155,7 +155,7 @@ $(".buttons").children().eq(2).click(()=>{
 
 let inputs = $("input");
 inputs.on("keyup",(e)=> {
-    if(e.target.value>9 || e.target.value==0){
+    if(e.target.value>9 || e.target.value==0 || typeof e.target.value!=Number){
         e.target.value="";
         console.log("prevent")
     }
