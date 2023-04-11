@@ -14,8 +14,6 @@ const sudokuObject = function () {
             $(inputs[counter]).prop("disabled",true);
             }
             counter++
-
-            
         }
         }
 
@@ -93,19 +91,50 @@ let board = document.getElementById("sudoku");
 let array2d=[];
 
 
-const validateRows = function(target,siblings) {
-    target.css("color","black");
-    for(let rowValue of siblings) {
-        if(target[0].value==rowValue.value) {
-            target.css("color","red");
-            break;
-        }else {
-            target.css("color","green");
+// const validateRows = function(target,siblings) {
+//     target.css("color","black");
+//     for(let rowValue of siblings) {
+//         if(target[0].value==rowValue.value) {
+//             target.css("color","red");
+//             break;
+//         }else {
+//             target.css("color","green");
             
+//         }
+//     }
+
+// }
+const validateRows = function(target) {
+    target.css("color","black");
+    let row = Math.floor((target[0].id-1)/9);
+    // console.log(row);
+    // let col = Math.floor((target[0].id-1));
+    // console.log(col);
+    // console.log(row);
+    let rowValues = [];
+    let columValues = [];
+    let isValid = true;
+    for(let i=0; i<9; i++) {
+        // console.log(parseInt(rows[row].children[i].value));
+        let value = parseInt(rows[row].children[i].value);
+        // let colVal = parseInt()
+        if(value) {
+            if(rowValues.includes(value)) { 
+                isValid = false;
+                rows[row].children[i].style.color = "red"; 
+            } else {
+                rows[row].children[i].style.color = "green"; 
+                rowValues.push(value);
+            }
         }
     }
+    if(isValid) {
+        target.css("color","green");
+    } else {
+        target.css("color","red");
+    }
+};
 
-}
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
         let button = document.createElement("button");
@@ -172,10 +201,14 @@ inputs.on("keyup",(e)=> {
         e.target.value="";
         console.log("prevent")
     }else {
-        validateRows($(e.target),$(e.target).siblings());
+        validateRows($(e.target));
         
     }
 })
+
+
+
+// ----------------------------------------------------------------
 // for (let row = 0; row < 9; row++) {
 //     for (let column = 0; column < 9; column++) {
 //         let number = Math.floor(Math.random() * 9) + 1;
