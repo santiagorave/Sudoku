@@ -155,7 +155,7 @@ let getJSON=()=>{
         sudoku.generateSudoku(JSON.parse(request.responseText)[0].values);
         }
     }
-    request.open("GET","http://127.0.0.1:5501/source.json");
+    request.open("GET","http://127.0.0.1:5501/Sudoku/source.json");
     request.send();
 }
 getJSON();
