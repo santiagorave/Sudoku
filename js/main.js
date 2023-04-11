@@ -154,8 +154,9 @@ $(".buttons").children().eq(2).click(()=>{
 })
 
 let inputs = $("input");
+let letters = RegExp(/^[a-zA-Z]*$/);
 inputs.on("keyup",(e)=> {
-    if(e.target.value>9 || e.target.value==0 || typeof e.target.value!=Number){
+    if(e.target.value>9 || e.target.value==0 || e.target.value.match(letters) ){
         e.target.value="";
         console.log("prevent")
     }
