@@ -152,6 +152,14 @@ $(".buttons").children().eq(2).click(()=>{
     sudoku.generateSudoku(array2d,"hard");
     
 })
+
+let inputs = $("input");
+inputs.on("keyup",(e)=> {
+    if(e.target.value>9 || e.target.value==0){
+        e.target.value="";
+        console.log("prevent")
+    }
+})
 // for (let row = 0; row < 9; row++) {
 //     for (let column = 0; column < 9; column++) {
 //         let number = Math.floor(Math.random() * 9) + 1;
