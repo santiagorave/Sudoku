@@ -97,14 +97,28 @@ const validateRows = function(target,siblings) {
     target.css("color","black");
     for(let rowValue of siblings) {
         if(target[0].value==rowValue.value) {
-            target.css("color","red");
-            break;
+            return true;
         }else {
-            target.css("color","green");
-            
+            target.css("color","green"); 
+
+
         }
     }
 
+}
+const validateColumns = function(target) {
+    target.css("color","black");
+    let rows = $("aside");
+        for(let a of rows) {
+            if( $(target).val()==$(a).children()[target.index()].value && target.prop("id")!=$(a).children()[target.index()].id ) {
+            // target.css("color","red");
+            return true;
+
+            }else {
+            // target.css("color","green");
+            
+        }
+        }
 }
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
@@ -124,9 +138,10 @@ let getJSON=()=>{
     request.onreadystatechange = ()=>{
         if(request.readyState==4 && request.status==200){
         sudoku.generateSudoku(JSON.parse(request.responseText)[0].values);
+        console.log(JSON.parse(request.responseText)[0].values);
         }
     }
-    request.open("GET","http://127.0.0.1:5502/source.json");
+    request.open("GET","/source.json");
     request.send();
 }
 getJSON();
@@ -172,7 +187,15 @@ inputs.on("keyup",(e)=> {
         e.target.value="";
         console.log("prevent")
     }else {
-        validateRows($(e.target),$(e.target).siblings());
+        $(e.target).css("color","black");
+        if(validateRows($(e.target),$(e.target).siblings()) ||  validateColumns($(e.target)) ){
+            $(e.target).css("color","red");
+
+        } else {
+            $(e.target).css("color","green"); 
+        }
+        // console.log(validateRows($(e.target),$(e.target).siblings())) ;
+        // validateColumns($(e.target));
         
     }
 })
