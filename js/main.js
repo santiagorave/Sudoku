@@ -98,9 +98,26 @@ let squres = [
     [58,59,60,67,68,69,76,77,78],
     [61,62,63,70,71,72,79,80,81]
 ];
-
-let validateSquare = function(){
-
+let findColumn = function(id, columns) {
+    for (let col of columns) {
+      if (col.includes(id)) {
+        return col;
+      }
+    }
+    return null;
+};
+let validateSquare = function(target){
+    target.css("color","black");
+    let idx = parseInt(target[0].id);
+    let cols = findColumn(idx, squres);
+    for(let col of cols) {
+        if(target[0] == $(inputs).get(col-1)) {
+            continue;
+        }
+        else if(target[0].value == $(inputs).get(col-1).value){
+            return true;
+        }
+    }
 }
 // add
 let row = null;
@@ -197,7 +214,7 @@ inputs.on("keyup",(e)=> {
         console.log("prevent");
     }else {
         $(e.target).css("color","black");
-        if(validateRows($(e.target),$(e.target).siblings()) ||  validateColumns($(e.target)) ){
+        if(validateRows($(e.target),$(e.target).siblings()) ||  validateColumns($(e.target)) || validateSquare($(e.target)) ){
             $(e.target).css("color","red");
 
         } else {
