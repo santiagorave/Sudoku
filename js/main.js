@@ -8,13 +8,13 @@ const sudokuObject = function () {
         let positions =this.randomPositions(difficulty);
         //Population
         for(let row=0;row<9;row++){
-        for(let column=0;column<9;column++){
-            if(positions.includes(counter)) {
-            inputs[counter].value=array2d[row][column]; //Pushing to html 
-            $(inputs[counter]).prop("disabled",true);
+            for(let column=0;column<9;column++){
+                if(positions.includes(counter)) {
+                    inputs[counter].value=array2d[row][column]; //Pushing to html 
+                    $(inputs[counter]).prop("disabled",true);
+                }
+                counter++
             }
-            counter++
-        }
         }
 
     };
@@ -43,20 +43,20 @@ const sudokuObject = function () {
             let arr = [];
             let idx = 0;
             while (idx < numberDifficulty) {
-            let num = Math.floor(Math.random() * 81) + 1;
+                let num = Math.floor(Math.random() * 81) + 1;
             if (!checkNum(num)) {
-            arr.push(num);
-            idx++;
+                arr.push(num);
+                idx++;
             }
             };
 
             function checkNum(num) {
-            for (let i = 0; i < arr.length; i++) {
-            if (num === arr[i]) {
-            return  true;
-            }
-            }
-            return false;
+                for (let i = 0; i < arr.length; i++) {
+                    if (num === arr[i]) {
+                        return  true;
+                    }
+                }
+                return false;
             }
             return arr; 
     };
@@ -76,8 +76,6 @@ const sudokuObject = function () {
             }  
         }
 
-
-
     }
 
 }
@@ -89,51 +87,51 @@ const sudokuObject = function () {
 let levelButtons = document.getElementsByClassName("buttons")[0];
 let board = document.getElementById("sudoku");
 let array2d=[];
+let columns = [];
 
+$.getJSON("http://127.0.0.1:5502/source.json", function(data) {
+    const source = data[0].values;
 
-// const validateRows = function(target,siblings) {
-//     target.css("color","black");
-//     for(let rowValue of siblings) {
-//         if(target[0].value==rowValue.value) {
-//             target.css("color","red");
-//             break;
-//         }else {
-//             target.css("color","green");
-            
-//         }
-//     }
+    for (let i = 0; i < data[0].size; i++) {
+      columns.push([]);
+    }
+  
+    for (let i = 0; i < source.length; i++) {
+      for (let j = 0; j < source[i].length; j++) {
+        columns[j].push(source[i][j]);
+      }
+    }
+});
+  
+const columnValid = function(target) {
+    console.log(target.row);
+    for (let i = 0; i < 9; i++) {
+      if (i === target.id) continue;
+      if (columns[i][target.column] === target.value) {
+        $(`#${target.column}-${i}`).css("color", "red");
+        $(`#${target.column}-${target.id}`).css("color", "red");
+        return false;
+      }
+    }
+    $(`#${target.column}-${target.id}`).css("color", "black");
+    return true;
+  };
 
-// }
-const validateRows = function(target) {
-    target.css("color","black");
-    let row = Math.floor((target[0].id-1)/9);
-    // console.log(row);
-    // let col = Math.floor((target[0].id-1));
-    // console.log(col);
-    // console.log(row);
-    let rowValues = [];
-    let columValues = [];
-    let isValid = true;
-    for(let i=0; i<9; i++) {
-        // console.log(parseInt(rows[row].children[i].value));
-        let value = parseInt(rows[row].children[i].value);
-        // let colVal = parseInt()
-        if(value) {
-            if(rowValues.includes(value)) { 
-                isValid = false;
-                rows[row].children[i].style.color = "red"; 
-            } else {
-                rows[row].children[i].style.color = "green"; 
-                rowValues.push(value);
-            }
+const validateRows = function(target, siblings) {
+    target.css("color", "black");
+    for (let rowValue of siblings) {
+      if (target[0].value == rowValue.value) {
+        if (columnValid(target[0])) {
+          $(rowValue).css("color", "red");
+          target.css("color", "red");
+          break;
         }
+      } else {
+        $(rowValue).css("color", "black");
+        target.css("color", "green");
+      }
     }
-    if(isValid) {
-        target.css("color","green");
-    } else {
-        target.css("color","red");
-    }
-};
+}
 
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
@@ -155,7 +153,7 @@ let getJSON=()=>{
         sudoku.generateSudoku(JSON.parse(request.responseText)[0].values);
         }
     }
-    request.open("GET","http://127.0.0.1:5501/Sudoku/source.json");
+    request.open("GET","http://127.0.0.1:5502/source.json");
     request.send();
 }
 getJSON();
@@ -199,88 +197,9 @@ let letters = RegExp(/^[a-zA-Z]*$/);
 inputs.on("keyup",(e)=> {
     if(e.target.value>9 || e.target.value==0 || e.target.value.match(letters) ){
         e.target.value="";
-        console.log("prevent")
+        console.log("prevent");
     }else {
-        validateRows($(e.target));
-        
+        validateRows($(e.target),$(e.target).siblings()); 
     }
 })
-
-
-
-// ----------------------------------------------------------------
-// for (let row = 0; row < 9; row++) {
-//     for (let column = 0; column < 9; column++) {
-//         let number = Math.floor(Math.random() * 9) + 1;
-
-//         console.log(`row: ${row}  column: ${column} Number: ${number}`);
-//         if (column >= 1) {
-//             // if(number==arrayTest[row][column-1]){
-//             //     console.log(`Este número:${number} es igual a ${arrayTest[row][column-1]}`)
-//             // }
-//             if (column == 8) {
-//             arrayTest[row][column] = number;
-
-//                 //    debugger;
-//                 // for(let m=0;m<9;m++){
-//                 // let compare =arrayTest[row][m];
-//                 // for(let n=0;n<arrayTest.length;n++){
-//                 //     if(m!=n){
-//                 //         if(compare==arrayTest[row][n]){
-//                 //             console.log(`Este número:${compare} es igual a ${arrayTest[row][n]}`)
-//                 //             console.log(`Antes: ${arrayTest[row][n]}`);
-//                 //             arrayTest[row][n]=Math.floor(Math.random() * 9) + 1;
-//                 //             console.log(`Después: ${arrayTest[row][n]}`);
-//                 //             }
-//                 //     }
-                // const checkRows = function () {
-                //     let arrayDuplicates=[];
-                //         for(let a=0;a<36;a++) {
-                //             let number = Math.floor(Math.random() * 81) + 1;
-                //             if(a==0) {
-                //                 arrayDuplicates.push(number);
-                //             }else {
-                //                 for(let k=0;k<arrayDuplicates.length;k++) {
-                //                     let compare = arrayDuplicates[k];
-                //                     // while(){
-
-                //                     // }
-                //                 }
-                //             }
-
-                //         }
-                //         // let compare = arrayTest[row][m];
-                //         // // debugger;
-                //         // for (let n = 0; n < 9; n++) {
-                //         //     if (m != n) {
-                //         //         if (compare == arrayTest[row][n]) {
-                //         //             // console.log(`Antes: ${arrayTest[row][n]}`);
-                //         //             arrayTest[row][n] = Math.floor(Math.random() * 9) + 1;
-                //         //             checkRows();
-                //         //             // console.log(`Después: ${arrayTest[row][n]}`);
-                //         //         }
-                //         //     }
-
-                //         // }
-                // // console.log(arrayDuplicates);
-
-                //     }
-
-                
-                // checkRows();
-//                 // } 
-//                 // }
-
-//             }
-
-//         }
-//         if(column!=8){
-//         arrayTest[row][column] = number;
-//         }
-//         counter++;
-//     }
-// }
-// console.log(arrayTest);
-// console.log(counter);
-
 
