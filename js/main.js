@@ -2,7 +2,7 @@ const sudokuObject = function () {
     this.generateSudoku = function (values,difficulty) {
         let inputs = document.getElementsByTagName("input");
         for(let k=0;k<9;k++){
-        array2d.push(values[k]);
+            array2d.push(values[k]);
         }
         let counter=0;
         let positions =this.randomPositions(difficulty);
@@ -18,7 +18,6 @@ const sudokuObject = function () {
         }
 
     };
-
     this.reset= function() {
      $("input").val("");
      $("input").prop("disabled",false);
@@ -87,45 +86,54 @@ const sudokuObject = function () {
 let levelButtons = document.getElementsByClassName("buttons")[0];
 let board = document.getElementById("sudoku");
 let array2d=[];
-let columns = [];
+// let columns = [];
 
-$.getJSON("http://127.0.0.1:5502/source.json", function(data) {
-    const source = data[0].values;
 
-    for (let i = 0; i < data[0].size; i++) {
-      columns.push([]);
-    }
+// function createColumns(start, numColumn, numRow, incre) {
+//     const columns = [];
+//     for (let i = 0; i < numColumn; i++) {
+//         const col = [];
+//         for (let j = 0; j < numRow; j++) {
+//             col.push(start + j * incre + i);
+//         }
+//         columns.push(col);
+//     }
+//     return columns;
+// }
   
-    for (let i = 0; i < source.length; i++) {
-      for (let j = 0; j < source[i].length; j++) {
-        columns[j].push(source[i][j]);
-      }
-    }
-});
-  
-const columnValid = function(target) {
-    console.log(target.row);
-    for (let i = 0; i < 9; i++) {
-      if (i === target.id) continue;
-      if (columns[i][target.column] === target.value) {
-        $(`#${target.column}-${i}`).css("color", "red");
-        $(`#${target.column}-${target.id}`).css("color", "red");
-        return false;
-      }
-    }
-    $(`#${target.column}-${target.id}`).css("color", "black");
-    return true;
-  };
+// let columns = createColumns(1, 9, 9, 9);
+// console.log(columns);
+
+
+// let findColumn = function(id, columns) {
+//     for (let col of columns) {
+//       if (col.includes(id)) {
+//         console.log(col)
+//         return col;
+//       }
+//     }
+//     return null;
+// };
+// let columnValid = function(target, siblings) {
+//     target.css("color", "black");
+//     for (let sibling of siblings) {
+//         if (target[0].value == sibling.value) {
+//             $(sibling).css("color", "red");
+//             target.css("color", "red");
+//         }
+//     }
+// };
+
 
 const validateRows = function(target, siblings) {
     target.css("color", "black");
     for (let rowValue of siblings) {
       if (target[0].value == rowValue.value) {
-        if (columnValid(target[0])) {
-          $(rowValue).css("color", "red");
-          target.css("color", "red");
-          break;
-        }
+        // let id = parseInt(target[0].id);
+        // let col = findColumn(target)
+        $(rowValue).css("color", "red");
+        target.css("color", "red");
+        break;
       } else {
         $(rowValue).css("color", "black");
         target.css("color", "green");
@@ -199,7 +207,8 @@ inputs.on("keyup",(e)=> {
         e.target.value="";
         console.log("prevent");
     }else {
-        validateRows($(e.target),$(e.target).siblings()); 
+        validateRows($(e.target),$(e.target).siblings());
+        validateColumns($(e.target), columns);
     }
 })
 
