@@ -86,61 +86,49 @@ const sudokuObject = function () {
 let levelButtons = document.getElementsByClassName("buttons")[0];
 let board = document.getElementById("sudoku");
 let array2d=[];
-// let columns = [];
+
+let squres = [
+    [1,2,3,10,11,12,19,20,21],
+    [4,5,6,13,14,15,22,23,24],
+    [7,8,9,16,17,18,25,26,27],
+    [28,29,30,37,38,39,46,47,48],
+    [31,32,33,40,41,42,49,50,51],
+    [34,35,36,43,44,45,52,53,54],
+    [55,56,57,64,65,66,73,74,75],
+    [58,59,60,67,68,69,76,77,78],
+    [61,62,63,70,71,72,79,80,81]
+];
+
+let validateSquare = function(){
+
+}
+// add
+let row = null;
+const validateRows = function(target,siblings) {
+    target.css("color","black");
+    for(let rowValue of siblings) {
+        if(target[0].value==rowValue.value) {
+            // add
+            row = $(rowValue);
+            return true;
+        }else {
+            target.css("color","green"); 
 
 
-// function createColumns(start, numColumn, numRow, incre) {
-//     const columns = [];
-//     for (let i = 0; i < numColumn; i++) {
-//         const col = [];
-//         for (let j = 0; j < numRow; j++) {
-//             col.push(start + j * incre + i);
-//         }
-//         columns.push(col);
-//     }
-//     return columns;
-// }
-  
-// let columns = createColumns(1, 9, 9, 9);
-// console.log(columns);
-
-
-// let findColumn = function(id, columns) {
-//     for (let col of columns) {
-//       if (col.includes(id)) {
-//         console.log(col)
-//         return col;
-//       }
-//     }
-//     return null;
-// };
-// let columnValid = function(target, siblings) {
-//     target.css("color", "black");
-//     for (let sibling of siblings) {
-//         if (target[0].value == sibling.value) {
-//             $(sibling).css("color", "red");
-//             target.css("color", "red");
-//         }
-//     }
-// };
-
-
-const validateRows = function(target, siblings) {
-    target.css("color", "black");
-    for (let rowValue of siblings) {
-      if (target[0].value == rowValue.value) {
-        // let id = parseInt(target[0].id);
-        // let col = findColumn(target)
-        $(rowValue).css("color", "red");
-        target.css("color", "red");
-        break;
-      } else {
-        $(rowValue).css("color", "black");
-        target.css("color", "green");
-      }
+        }
     }
 }
-
+// add
+let col = null;
+const validateColumns = function(target) {
+    target.css("color","black");
+    let rows = $("aside");
+        for(let a of rows) {
+            if( $(target).val()==$(a).children()[target.index()].value && target.prop("id")!=$(a).children()[target.index()].id) {
+                return true;
+            }
+        }
+}
 const generateButtons = function () {
     for (let i = 0; i < 3; i++) {
         let button = document.createElement("button");
@@ -159,9 +147,10 @@ let getJSON=()=>{
     request.onreadystatechange = ()=>{
         if(request.readyState==4 && request.status==200){
         sudoku.generateSudoku(JSON.parse(request.responseText)[0].values);
+        console.log(JSON.parse(request.responseText)[0].values);
         }
     }
-    request.open("GET","http://127.0.0.1:5502/source.json");
+    request.open("GET","/source.json");
     request.send();
 }
 getJSON();
@@ -207,8 +196,16 @@ inputs.on("keyup",(e)=> {
         e.target.value="";
         console.log("prevent");
     }else {
-        validateRows($(e.target),$(e.target).siblings());
-        validateColumns($(e.target), columns);
+        $(e.target).css("color","black");
+        if(validateRows($(e.target),$(e.target).siblings()) ||  validateColumns($(e.target)) ){
+            $(e.target).css("color","red");
+
+        } else {
+            $(e.target).css("color","green"); 
+        }
+        // console.log(validateRows($(e.target),$(e.target).siblings())) ;
+        // validateColumns($(e.target));
+        
     }
 })
 
