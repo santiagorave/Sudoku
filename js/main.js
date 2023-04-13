@@ -19,8 +19,14 @@ const sudokuObject = function () {
 
     };
     this.reset= function() {
-     $("input").val("");
-     $("input").prop("disabled",false);
+    let all = Array.from(document.getElementsByTagName("input"));
+    for(let input of all ) {
+        input.value="";
+        input.removeAttribute("disabled");
+        $(input).css("color","black");
+
+    }
+    //  $("input").prop("disabled",false);
     }
     this.randomPositions = function(difficulty) {
         let numberDifficulty;
@@ -119,19 +125,11 @@ let validateSquare = function(target){
         }
     }
 }
-// add
-let row = null;
 const validateRows = function(target,siblings) {
     target.css("color","black");
     for(let rowValue of siblings) {
         if(target[0].value==rowValue.value) {
-            // add
-            row = $(rowValue);
             return true;
-        }else {
-            target.css("color","green"); 
-
-
         }
     }
 }
@@ -208,7 +206,8 @@ $(".buttons").children().eq(2).click(()=>{
 
 let inputs = $("input");
 let letters = RegExp(/^[a-zA-Z]*$/);
-inputs.on("keyup",(e)=> {
+
+inputs.on("keyup",(e)=> { 
     if(e.target.value>9 || e.target.value==0 || e.target.value.match(letters) ){
         e.target.value="";
         console.log("prevent");
@@ -219,21 +218,25 @@ inputs.on("keyup",(e)=> {
 
         } else {
             $(e.target).css("color","green");
-            let notCorrect=false;
-            for (let input of inputs ) {
-                if(input.value=="") {
-                    notCorrect=true;
-                    break;
-                }
-            }
-            if(notCorrect==false){
-                console.log("Perfect")
-            }
+
             
-        }
-        // console.log(validateRows($(e.target),$(e.target).siblings())) ;
-        // validateColumns($(e.target));
-        
+        }        
     }
+    let all = Array.from(document.getElementsByTagName("input"));
+    if(all.find(el=>  $(el).css("color")=="rgb(255, 0, 0)")==undefined && all.find(el=> el.value=="")==undefined ) {
+        console.log("perfect");
+        $("#myModal").show();
+
+    }
+
+})
+
+$(".modal-content").children().eq(1).click(()=>{
+    $(".buttons").children().removeClass("active");
+    $(".buttons").children().eq(0).addClass("active");
+    sudoku.reset();
+    sudoku.generateSudoku(array2d,"easy");
+    $("#myModal").hide();
+
 })
 
