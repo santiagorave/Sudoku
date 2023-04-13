@@ -218,7 +218,18 @@ inputs.on("keyup",(e)=> {
             $(e.target).css("color","red");
 
         } else {
-            $(e.target).css("color","green"); 
+            $(e.target).css("color","green");
+            let notCorrect=false;
+            for (let input of inputs ) {
+                if(input.value=="") {
+                    notCorrect=true;
+                    break;
+                }
+            }
+            if(notCorrect==false){
+                console.log("Perfect")
+            }
+            
         }
         // console.log(validateRows($(e.target),$(e.target).siblings())) ;
         // validateColumns($(e.target));
